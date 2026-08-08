@@ -109,40 +109,37 @@
       z-index: 1000;
     }
 
-    /* FUNDO DO CARRINHO */
+    /* FUNDO DOS MODAIS */
 
-    #fundoCarrinho {
+    .modal {
       display: none;
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.55);
       z-index: 2000;
-    }
-
-    /* JANELA DO CARRINHO */
-
-    #carrinho {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 600px;
-      max-height: 85vh;
-      background: white;
-      border-radius: 18px 18px 0 0;
-      padding: 20px;
       overflow-y: auto;
     }
 
-    .cabecalhoCarrinho {
+    /* JANELAS */
+
+    .janela {
+      position: relative;
+      margin: 40px auto;
+      width: calc(100% - 20px);
+      max-width: 600px;
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .cabecalhoModal {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 15px;
     }
 
-    .cabecalhoCarrinho h2 {
+    .cabecalhoModal h2 {
       margin: 0;
     }
 
@@ -155,6 +152,8 @@
       font-size: 20px;
       cursor: pointer;
     }
+
+    /* CARRINHO */
 
     .itemCarrinho {
       border-bottom: 1px solid #eee;
@@ -215,7 +214,7 @@
       padding: 20px 0;
     }
 
-    .btnFinalizar {
+    .btnPrincipal {
       width: 100%;
       background: #111;
       color: white;
@@ -231,6 +230,101 @@
       text-align: center;
       padding: 30px 10px;
       color: #666;
+    }
+
+    /* FORMULÁRIO */
+
+    .campo {
+      margin-bottom: 15px;
+    }
+
+    .campo label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .campo input,
+    .campo textarea,
+    .campo select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 9px;
+      font-size: 16px;
+      background: white;
+    }
+
+    .campo textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .opcoes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .opcao {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 13px;
+      cursor: pointer;
+      text-align: center;
+      background: white;
+    }
+
+    .opcao input {
+      margin-right: 6px;
+    }
+
+    .resumoCheckout {
+      background: #f5f5f5;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 20px 0;
+    }
+
+    .resumoLinha {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      gap: 10px;
+    }
+
+    .resumoTotal {
+      border-top: 1px solid #ddd;
+      margin-top: 10px;
+      padding-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .oculto {
+      display: none;
+    }
+
+    .sucesso {
+      text-align: center;
+      padding: 20px 5px;
+    }
+
+    .sucesso .icone {
+      font-size: 55px;
+      margin-bottom: 10px;
+    }
+
+    .sucesso h2 {
+      margin-bottom: 10px;
+    }
+
+    .numeroPedido {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 20px 0;
     }
   </style>
 </head>
@@ -252,44 +346,312 @@
 
 </main>
 
+
 <!-- BOTÃO FIXO DO CARRINHO -->
 
 <button id="botaoCarrinho" onclick="abrirCarrinho()">
   🛒 Ver pedido (0) — R$ 0,00
 </button>
 
-<!-- CARRINHO -->
 
-<div id="fundoCarrinho">
+<!-- MODAL DO CARRINHO -->
 
-  <div id="carrinho">
+<div id="modalCarrinho" class="modal">
 
-    <div class="cabecalhoCarrinho">
+  <div class="janela">
+
+    <div class="cabecalhoModal">
+
       <h2>🛒 Seu pedido</h2>
 
       <button class="fechar" onclick="fecharCarrinho()">
         ×
       </button>
+
     </div>
 
     <div id="itensCarrinho">
+
       <div class="carrinhoVazio">
         Seu carrinho está vazio.
       </div>
+
     </div>
 
     <div class="totalCarrinho">
+
       <span>Total</span>
-      <span id="total">R$ 0,00</span>
+
+      <span id="total">
+        R$ 0,00
+      </span>
+
     </div>
 
-    <button class="btnFinalizar" onclick="finalizarPedido()">
-      Finalizar pedido
+    <button
+      class="btnPrincipal"
+      onclick="abrirCheckout()">
+
+      Continuar para finalizar
+
     </button>
 
   </div>
 
 </div>
+
+
+<!-- MODAL CHECKOUT -->
+
+<div id="modalCheckout" class="modal">
+
+  <div class="janela">
+
+    <div class="cabecalhoModal">
+
+      <h2>📋 Finalizar pedido</h2>
+
+      <button class="fechar" onclick="fecharCheckout()">
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- DADOS DO CLIENTE -->
+
+    <div class="campo">
+
+      <label for="nomeCliente">
+        Nome *
+      </label>
+
+      <input
+        id="nomeCliente"
+        type="text"
+        placeholder="Digite seu nome">
+
+    </div>
+
+
+    <div class="campo">
+
+      <label for="telefone">
+        WhatsApp *
+      </label>
+
+      <input
+        id="telefone"
+        type="tel"
+        placeholder="(21) 99999-9999">
+
+    </div>
+
+
+    <!-- TIPO DO PEDIDO -->
+
+    <div class="campo">
+
+      <label>
+        Como deseja receber?
+      </label>
+
+    </div>
+
+
+    <div class="opcoes">
+
+      <label class="opcao">
+
+        <input
+          type="radio"
+          name="tipoPedido"
+          value="retirada"
+          checked
+          onchange="alterarTipoPedido()">
+
+        🏪 Retirada
+
+      </label>
+
+
+      <label class="opcao">
+
+        <input
+          type="radio"
+          name="tipoPedido"
+          value="entrega"
+          onchange="alterarTipoPedido()">
+
+        🛵 Entrega
+
+      </label>
+
+    </div>
+
+
+    <!-- ENDEREÇO -->
+
+    <div id="enderecoEntrega" class="oculto">
+
+      <div class="campo">
+
+        <label for="endereco">
+          Endereço *
+        </label>
+
+        <input
+          id="endereco"
+          type="text"
+          placeholder="Rua, avenida...">
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="numero">
+          Número *
+        </label>
+
+        <input
+          id="numero"
+          type="text"
+          placeholder="Número">
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="complemento">
+          Complemento
+        </label>
+
+        <input
+          id="complemento"
+          type="text"
+          placeholder="Apartamento, casa, referência...">
+
+      </div>
+
+    </div>
+
+
+    <!-- PAGAMENTO -->
+
+    <div class="campo">
+
+      <label for="pagamento">
+        Forma de pagamento *
+      </label>
+
+      <select id="pagamento">
+
+        <option value="">
+          Selecione
+        </option>
+
+        <option value="pix">
+          Pix
+        </option>
+
+        <option value="dinheiro">
+          Dinheiro
+        </option>
+
+        <option value="cartao">
+          Cartão
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="campo">
+
+      <label for="observacao">
+        Observação
+      </label>
+
+      <textarea
+        id="observacao"
+        placeholder="Ex.: sem cebola, ponto da carne..."></textarea>
+
+    </div>
+
+
+    <!-- RESUMO -->
+
+    <div class="resumoCheckout">
+
+      <div id="resumoItens"></div>
+
+      <div class="resumoLinha resumoTotal">
+
+        <span>Total</span>
+
+        <span id="resumoTotal">
+          R$ 0,00
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="btnPrincipal"
+      onclick="confirmarPedido()">
+
+      ✅ Confirmar pedido
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- MODAL DE SUCESSO -->
+
+<div id="modalSucesso" class="modal">
+
+  <div class="janela">
+
+    <div class="sucesso">
+
+      <div class="icone">
+        ✅
+      </div>
+
+      <h2>
+        Pedido recebido!
+      </h2>
+
+      <p>
+        Seu pedido foi preparado com sucesso.
+      </p>
+
+      <div class="numeroPedido">
+        Pedido #<span id="numeroPedido"></span>
+      </div>
+
+      <button
+        class="btnPrincipal"
+        onclick="fecharSucesso()">
+
+        Voltar ao cardápio
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
 
 <script>
 
@@ -305,10 +667,12 @@
 
 
   /* ============================
-     CARRINHO
+     VARIÁVEIS
   ============================ */
 
   let carrinho = [];
+
+  let produtosDisponiveis = [];
 
 
   /* ============================
@@ -321,8 +685,6 @@
       SUPABASE_URL +
       "/rest/v1/produtos?select=*&hamburgueria_id=eq.1&ativo=eq.true";
 
-    console.log("Consultando Supabase:", url);
-
     try {
 
       const resposta = await fetch(url, {
@@ -330,40 +692,36 @@
         method: "GET",
 
         headers: {
+
           "apikey": SUPABASE_KEY,
-          "Authorization": "Bearer " + SUPABASE_KEY,
-          "Content-Type": "application/json"
+
+          "Authorization":
+            "Bearer " + SUPABASE_KEY,
+
+          "Content-Type":
+            "application/json"
+
         }
 
       });
 
-      console.log(
-        "Status da resposta:",
-        resposta.status
-      );
 
       if (!resposta.ok) {
 
-        const erroTexto =
-          await resposta.text();
-
-        console.error(
-          "Erro retornado pelo Supabase:",
-          erroTexto
-        );
-
         throw new Error(
-          "Erro ao acessar o banco."
+          "Erro ao acessar produtos."
         );
+
       }
+
 
       const produtos =
         await resposta.json();
 
-      console.log(
-        "Produtos encontrados:",
-        produtos
-      );
+
+      produtosDisponiveis =
+        produtos;
+
 
       const container =
         document.getElementById("produtos");
@@ -375,6 +733,7 @@
           "<div id='mensagem'>Nenhum produto disponível.</div>";
 
         return;
+
       }
 
 
@@ -386,7 +745,9 @@
         const item =
           document.createElement("div");
 
-        item.className = "produto";
+
+        item.className =
+          "produto";
 
 
         item.innerHTML = `
@@ -400,9 +761,7 @@
           </div>
 
           <span class="preco">
-            R$ ${Number(produto.preco)
-              .toFixed(2)
-              .replace(".", ",")}
+            R$ ${formatarPreco(produto.preco)}
           </span>
 
           <button
@@ -420,45 +779,33 @@
 
       });
 
-
-      /* Guardamos os produtos para o carrinho */
-
-      window.produtosDisponiveis = produtos;
-
     }
 
     catch (erro) {
 
-      console.error(
-        "Erro completo:",
-        erro
-      );
+      console.error(erro);
 
       document.getElementById("produtos").innerHTML =
         "<div id='mensagem'>Não foi possível carregar o cardápio.</div>";
+
     }
 
   }
 
 
   /* ============================
-     ADICIONAR AO CARRINHO
+     ADICIONAR
   ============================ */
 
   function adicionarAoCarrinho(id) {
 
     const produto =
-      window.produtosDisponiveis.find(
+      produtosDisponiveis.find(
         p => p.id === id
       );
 
 
-    if (!produto) {
-
-      alert("Produto não encontrado.");
-
-      return;
-    }
+    if (!produto) return;
 
 
     const existente =
@@ -494,7 +841,7 @@
 
 
   /* ============================
-     AUMENTAR QUANTIDADE
+     AUMENTAR
   ============================ */
 
   function aumentarQuantidade(id) {
@@ -518,7 +865,7 @@
 
 
   /* ============================
-     DIMINUIR QUANTIDADE
+     DIMINUIR
   ============================ */
 
   function diminuirQuantidade(id) {
@@ -551,7 +898,7 @@
 
 
   /* ============================
-     REMOVER PRODUTO
+     REMOVER
   ============================ */
 
   function removerProduto(id) {
@@ -576,8 +923,10 @@
     const container =
       document.getElementById("itensCarrinho");
 
+
     const botao =
       document.getElementById("botaoCarrinho");
+
 
     const totalElemento =
       document.getElementById("total");
@@ -592,6 +941,7 @@
 
       quantidadeTotal +=
         item.quantidade;
+
 
       valorTotal +=
         item.preco *
@@ -627,6 +977,7 @@
 
       const div =
         document.createElement("div");
+
 
       div.className =
         "itemCarrinho";
@@ -698,26 +1049,13 @@
 
 
   /* ============================
-     FORMATAR PREÇO
-  ============================ */
-
-  function formatarPreco(valor) {
-
-    return Number(valor)
-      .toFixed(2)
-      .replace(".", ",");
-
-  }
-
-
-  /* ============================
      ABRIR CARRINHO
   ============================ */
 
   function abrirCarrinho() {
 
     document.getElementById(
-      "fundoCarrinho"
+      "modalCarrinho"
     ).style.display = "block";
 
   }
@@ -730,17 +1068,17 @@
   function fecharCarrinho() {
 
     document.getElementById(
-      "fundoCarrinho"
+      "modalCarrinho"
     ).style.display = "none";
 
   }
 
 
   /* ============================
-     FINALIZAR PEDIDO
+     ABRIR CHECKOUT
   ============================ */
 
-  function finalizarPedido() {
+  function abrirCheckout() {
 
     if (carrinho.length === 0) {
 
@@ -753,9 +1091,324 @@
     }
 
 
-    alert(
-      "Carrinho pronto! Na próxima etapa vamos criar a tela de dados do cliente e enviar o pedido para a hamburgueria."
-    );
+    fecharCarrinho();
+
+
+    montarResumo();
+
+
+    document.getElementById(
+      "modalCheckout"
+    ).style.display = "block";
+
+  }
+
+
+  /* ============================
+     FECHAR CHECKOUT
+  ============================ */
+
+  function fecharCheckout() {
+
+    document.getElementById(
+      "modalCheckout"
+    ).style.display = "none";
+
+  }
+
+
+  /* ============================
+     TIPO DO PEDIDO
+  ============================ */
+
+  function alterarTipoPedido() {
+
+    const tipo =
+      document.querySelector(
+        'input[name="tipoPedido"]:checked'
+      ).value;
+
+
+    const endereco =
+      document.getElementById(
+        "enderecoEntrega"
+      );
+
+
+    if (tipo === "entrega") {
+
+      endereco.classList.remove(
+        "oculto"
+      );
+
+    } else {
+
+      endereco.classList.add(
+        "oculto"
+      );
+
+    }
+
+  }
+
+
+  /* ============================
+     RESUMO
+  ============================ */
+
+  function montarResumo() {
+
+    const container =
+      document.getElementById(
+        "resumoItens"
+      );
+
+
+    let total = 0;
+
+
+    container.innerHTML = "";
+
+
+    carrinho.forEach(item => {
+
+      const subtotal =
+        item.preco *
+        item.quantidade;
+
+
+      total += subtotal;
+
+
+      const linha =
+        document.createElement("div");
+
+
+      linha.className =
+        "resumoLinha";
+
+
+      linha.innerHTML = `
+
+        <span>
+          ${item.quantidade}x ${item.nome}
+        </span>
+
+        <span>
+          R$ ${formatarPreco(subtotal)}
+        </span>
+
+      `;
+
+
+      container.appendChild(linha);
+
+    });
+
+
+    document.getElementById(
+      "resumoTotal"
+    ).innerHTML =
+      "R$ " + formatarPreco(total);
+
+  }
+
+
+  /* ============================
+     CONFIRMAR PEDIDO
+  ============================ */
+
+  function confirmarPedido() {
+
+    const nome =
+      document.getElementById(
+        "nomeCliente"
+      ).value.trim();
+
+
+    const telefone =
+      document.getElementById(
+        "telefone"
+      ).value.trim();
+
+
+    const pagamento =
+      document.getElementById(
+        "pagamento"
+      ).value;
+
+
+    const tipo =
+      document.querySelector(
+        'input[name="tipoPedido"]:checked'
+      ).value;
+
+
+    if (!nome) {
+
+      alert(
+        "Digite seu nome."
+      );
+
+      return;
+
+    }
+
+
+    if (!telefone) {
+
+      alert(
+        "Digite seu WhatsApp."
+      );
+
+      return;
+
+    }
+
+
+    if (!pagamento) {
+
+      alert(
+        "Selecione a forma de pagamento."
+      );
+
+      return;
+
+    }
+
+
+    if (tipo === "entrega") {
+
+      const endereco =
+        document.getElementById(
+          "endereco"
+        ).value.trim();
+
+
+      const numero =
+        document.getElementById(
+          "numero"
+        ).value.trim();
+
+
+      if (!endereco || !numero) {
+
+        alert(
+          "Informe o endereço e o número."
+        );
+
+        return;
+
+      }
+
+    }
+
+
+    /*
+      NESTA ETAPA O PEDIDO AINDA
+      NÃO É SALVO NO SUPABASE.
+
+      Estamos apenas simulando
+      a confirmação.
+    */
+
+
+    const numeroPedido =
+      Math.floor(
+        1000 +
+        Math.random() * 9000
+      );
+
+
+    document.getElementById(
+      "numeroPedido"
+    ).innerText =
+      numeroPedido;
+
+
+    document.getElementById(
+      "modalCheckout"
+    ).style.display = "none";
+
+
+    document.getElementById(
+      "modalSucesso"
+    ).style.display = "block";
+
+  }
+
+
+  /* ============================
+     FECHAR SUCESSO
+  ============================ */
+
+  function fecharSucesso() {
+
+    document.getElementById(
+      "modalSucesso"
+    ).style.display = "none";
+
+
+    carrinho = [];
+
+
+    atualizarCarrinho();
+
+
+    document.getElementById(
+      "nomeCliente"
+    ).value = "";
+
+
+    document.getElementById(
+      "telefone"
+    ).value = "";
+
+
+    document.getElementById(
+      "endereco"
+    ).value = "";
+
+
+    document.getElementById(
+      "numero"
+    ).value = "";
+
+
+    document.getElementById(
+      "complemento"
+    ).value = "";
+
+
+    document.getElementById(
+      "observacao"
+    ).value = "";
+
+
+    document.getElementById(
+      "pagamento"
+    ).value = "";
+
+
+    document.querySelector(
+      'input[value="retirada"]'
+    ).checked = true;
+
+
+    alterarTipoPedido();
+
+  }
+
+
+  /* ============================
+     PREÇO
+  ============================ */
+
+  function formatarPreco(valor) {
+
+    return Number(valor)
+      .toFixed(2)
+      .replace(".", ",");
 
   }
 

@@ -1383,17 +1383,16 @@
 
     if (!respostaPedido.ok) {
 
-  const erro =
-    await respostaPedido.text();
+  const erro = await respostaPedido.text();
 
-  console.error(
-    "Erro ao criar pedido:",
-    erro
+  alert(
+    "SUPABASE ERRO\n\n" +
+    "Status: " + respostaPedido.status + "\n" +
+    "Status: " + respostaPedido.statusText + "\n\n" +
+    "Resposta:\n" + erro
   );
 
-  throw new Error(
-    "Erro ao criar pedido: " + erro
-  );
+  return;
 
 }
 

@@ -1525,7 +1525,11 @@
   );
 
   alert(
-  "ERRO: " + JSON.stringify(erro)
+  "ERRO:\n" +
+  "Mensagem: " + (erro?.message || "não informado") + "\n" +
+  "Detalhes: " + (erro?.details || "não informado") + "\n" +
+  "Código: " + (erro?.code || "não informado") + "\n" +
+  "Hint: " + (erro?.hint || "não informado")
 );
 
 

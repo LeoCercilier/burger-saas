@@ -1218,112 +1218,293 @@
      CONFIRMAR PEDIDO
   ============================ */
 
-  function confirmarPedido() {
+  async function confirmarPedido() {
 
-    const nome =
-      document.getElementById(
-        "nomeCliente"
-      ).value.trim();
+  const nome =
+    document.getElementById("nomeCliente").value.trim();
+
+  const telefone =
+    document.getElementById("telefone").value.trim();
+
+  const pagamento =
+    document.getElementById("pagamento").value;
+
+  const tipo =
+    document.querySelector(
+      'input[name="tipoPedido"]:checked'
+    ).value;
+
+  const endereco =
+    document.getElementById("endereco").value.trim();
+
+  const numero =
+    document.getElementById("numero").value.trim();
+
+  const complemento =
+    document.getElementById("complemento").value.trim();
+
+  const observacao =
+    document.getElementById("observacao").value.trim();
 
 
-    const telefone =
-      document.getElementById(
-        "telefone"
-      ).value.trim();
+  /* ============================
+     VALIDAÇÕES
+  ============================ */
+
+  if (!nome) {
+    alert("Digite seu nome.");
+    return;
+  }
+
+  if (!telefone) {
+    alert("Digite seu WhatsApp.");
+    return;
+  }
+
+  if (!pagamento) {
+    alert("Selecione a forma de pagamento.");
+    return;
+  }
+
+  if (tipo === "entrega" && (!endereco || !numero)) {
+    alert("Informe o endereço e o número.");
+    return;
+  }
+
+  if (carrinho.length === 0) {
+    alert("Seu carrinho está vazio.");
+    return;
+  }
 
 
-    const pagamento =
-      document.getElementById(
-        "pagamento"
-      ).value;
+  /* ============================
+     CALCULAR TOTAL
+  ============================ */
+
+  let total = 0;
+
+  carrinho.forEach(item => {
+
+    total +=
+      Number(item.preco) *
+      Number(item.quantidade);
+
+  });
 
 
-    const tipo =
-      document.querySelector(
-        'input[name="tipoPedido"]:checked'
-      ).value;
+  /* ============================
+     BOTÃO
+  ============================ */
+
+  const botao =
+    document.querySelector(
+      "#modalCheckout .btnPrincipal"
+    );
+
+  const textoOriginal =
+    botao.innerText;
+
+  botao.disabled = true;
+
+  botao.innerText =
+    "Enviando pedido...";
 
 
-    if (!nome) {
+  try {
 
-      alert(
-        "Digite seu nome."
+    /* ============================
+       CRIAR PEDIDO
+    ============================ */
+
+    const respostaPedido =
+      await fetch(
+        SUPABASE_URL + "/rest/v1/pedidos",
+        {
+          method: "POST",
+
+          headers: {
+
+            "apikey": SUPABASE_KEY,
+
+            "Authorization":
+              "Bearer " + SUPABASE_KEY,
+
+            "Content-Type":
+              "application/json",
+
+            "Prefer":
+              "return=representation"
+
+          },
+
+          body: JSON.stringify({
+
+            hamburgueria_id: 1,
+
+            nome_cliente: nome,
+
+            telefone: telefone,
+
+            tipo_pedido: tipo,
+
+            endereco:
+              tipo === "entrega"
+                ? endereco
+                : null,
+
+            numero:
+              tipo === "entrega"
+                ? numero
+                : null,
+
+            complemento:
+              tipo === "entrega"
+                ? complemento
+                : null,
+
+            pagamento: pagamento,
+
+            observacao:
+              observacao || null,
+
+            total: total,
+
+            status: "novo"
+
+          })
+
+        }
       );
 
-      return;
+
+    /* ============================
+       VERIFICAR RESPOSTA
+    ============================ */
+
+    if (!respostaPedido.ok) {
+
+      const erro =
+        await respostaPedido.text();
+
+      console.error(
+        "Erro ao criar pedido:",
+        erro
+      );
+
+      throw new Error(
+        "Erro ao criar pedido."
+      );
 
     }
 
 
-    if (!telefone) {
+    const pedidoCriado =
+      await respostaPedido.json();
 
-      alert(
-        "Digite seu WhatsApp."
+
+    console.log(
+      "Pedido criado:",
+      pedidoCriado
+    );
+
+
+    const pedido =
+      pedidoCriado[0];
+
+
+    if (!pedido || !pedido.id) {
+
+      throw new Error(
+        "O Supabase não retornou o ID do pedido."
       );
-
-      return;
 
     }
 
 
-    if (!pagamento) {
+    /* ============================
+       CRIAR ITENS
+    ============================ */
 
-      alert(
-        "Selecione a forma de pagamento."
+    const itens =
+      carrinho.map(item => ({
+
+        pedido_id:
+          pedido.id,
+
+        produto_id:
+          item.id,
+
+        quantidade:
+          Number(item.quantidade),
+
+        preco_unitario:
+          Number(item.preco),
+
+        subtotal:
+          Number(item.preco) *
+          Number(item.quantidade)
+
+      }));
+
+
+    const respostaItens =
+      await fetch(
+        SUPABASE_URL + "/rest/v1/itens_pedido",
+        {
+          method: "POST",
+
+          headers: {
+
+            "apikey": SUPABASE_KEY,
+
+            "Authorization":
+              "Bearer " + SUPABASE_KEY,
+
+            "Content-Type":
+              "application/json"
+
+          },
+
+          body: JSON.stringify(itens)
+
+        }
       );
 
-      return;
+
+    /* ============================
+       VERIFICAR ITENS
+    ============================ */
+
+    if (!respostaItens.ok) {
+
+      const erro =
+        await respostaItens.text();
+
+      console.error(
+        "Erro ao criar itens:",
+        erro
+      );
+
+      throw new Error(
+        "Erro ao salvar os produtos do pedido."
+      );
 
     }
 
 
-    if (tipo === "entrega") {
-
-      const endereco =
-        document.getElementById(
-          "endereco"
-        ).value.trim();
+    console.log(
+      "Pedido e itens salvos com sucesso."
+    );
 
 
-      const numero =
-        document.getElementById(
-          "numero"
-        ).value.trim();
-
-
-      if (!endereco || !numero) {
-
-        alert(
-          "Informe o endereço e o número."
-        );
-
-        return;
-
-      }
-
-    }
-
-
-    /*
-      NESTA ETAPA O PEDIDO AINDA
-      NÃO É SALVO NO SUPABASE.
-
-      Estamos apenas simulando
-      a confirmação.
-    */
-
-
-    const numeroPedido =
-      Math.floor(
-        1000 +
-        Math.random() * 9000
-      );
-
+    /* ============================
+       MOSTRAR SUCESSO
+    ============================ */
 
     document.getElementById(
       "numeroPedido"
     ).innerText =
-      numeroPedido;
+      pedido.id;
 
 
     document.getElementById(
@@ -1335,9 +1516,29 @@
       "modalSucesso"
     ).style.display = "block";
 
+
+  } catch (erro) {
+
+    console.error(
+      "Erro completo:",
+      erro
+    );
+
+    alert(
+      "Não foi possível enviar o pedido. Tente novamente."
+    );
+
+
+  } finally {
+
+    botao.disabled = false;
+
+    botao.innerText =
+      textoOriginal;
+
   }
 
-
+}
   /* ============================
      FECHAR SUCESSO
   ============================ */

@@ -1519,14 +1519,17 @@
 
   } catch (erro) {
 
-    console.error(
-      "Erro completo:",
-      erro
-    );
+  console.error(
+    "Erro completo:",
+    erro
+  );
 
-    alert(
-      "Não foi possível enviar o pedido. Tente novamente."
-    );
+  alert(
+    "ERRO AO ENVIAR PEDIDO:\n\n" +
+    erro.message
+  );
+
+}
 
 
   } finally {

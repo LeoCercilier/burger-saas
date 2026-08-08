@@ -50,6 +50,7 @@
       padding: 16px;
       margin-bottom: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      overflow: hidden;
     }
 
     .produto h3 {
@@ -77,6 +78,10 @@
       cursor: pointer;
     }
 
+    button:hover {
+      opacity: 0.85;
+    }
+
     #mensagem {
       text-align: center;
       padding: 30px;
@@ -101,71 +106,109 @@
 </main>
 
 <script>
-  // COLOQUE AQUI A SUA API URL DO SUPABASE
-  const SUPABASE_URL = "https://chzatnrzmwgjpyxnfdlt.supabase.co/rest/v1/";
+  // URL BASE DO SUPABASE
+  // IMPORTANTE: NÃO colocar /rest/v1/ aqui
+  const SUPABASE_URL = "https://chzatnrzmwgjpyxnfdlt.supabase.co";
 
-  // COLOQUE AQUI A SUA PUBLISHABLE KEY / ANON KEY
+  // PUBLISHABLE KEY / ANON KEY
   const SUPABASE_KEY = "sb_publishable_p_5VyliNPeji3YKccxVqUQ_bTt9_YwR";
 
   async function carregarProdutos() {
+
     const url =
       SUPABASE_URL +
       "/rest/v1/produtos?select=*&hamburgueria_id=eq.1&ativo=eq.true";
 
+    console.log("Consultando Supabase:", url);
+
     try {
+
       const resposta = await fetch(url, {
+        method: "GET",
         headers: {
           "apikey": SUPABASE_KEY,
-          "Authorization": "Bearer " + SUPABASE_KEY
+          "Authorization": "Bearer " + SUPABASE_KEY,
+          "Content-Type": "application/json"
         }
       });
 
+      console.log("Status da resposta:", resposta.status);
+
       if (!resposta.ok) {
-        throw new Error("Erro ao acessar o banco");
+
+        const erroTexto = await resposta.text();
+
+        console.error(
+          "Erro retornado pelo Supabase:",
+          erroTexto
+        );
+
+        throw new Error(
+          "Erro ao acessar o banco. Status: " +
+          resposta.status
+        );
       }
 
       const produtos = await resposta.json();
 
+      console.log("Produtos encontrados:", produtos);
+
       const container = document.getElementById("produtos");
 
       if (produtos.length === 0) {
-        container.innerHTML = "<div id='mensagem'>Nenhum produto disponível.</div>";
+
+        container.innerHTML =
+          "<div id='mensagem'>Nenhum produto disponível.</div>";
+
         return;
       }
 
       container.innerHTML = "";
 
       produtos.forEach(produto => {
+
         const item = document.createElement("div");
+
         item.className = "produto";
 
         item.innerHTML = `
           <h3>${produto.nome}</h3>
-          <div class="descricao">${produto.descricao || ""}</div>
+
+          <div class="descricao">
+            ${produto.descricao || ""}
+          </div>
+
           <span class="preco">
             R$ ${Number(produto.preco).toFixed(2).replace(".", ",")}
           </span>
+
           <button onclick="adicionar('${produto.nome}')">
             + Adicionar
           </button>
         `;
 
         container.appendChild(item);
+
       });
 
     } catch (erro) {
+
+      console.error("Erro completo:", erro);
+
       document.getElementById("produtos").innerHTML =
         "<div id='mensagem'>Não foi possível carregar o cardápio.</div>";
-
-      console.error(erro);
     }
   }
 
   function adicionar(nome) {
+
     alert(nome + " foi adicionado ao pedido!");
+
   }
 
+  // Inicia o carregamento
   carregarProdutos();
+
 </script>
 
 </body>

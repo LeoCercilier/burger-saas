@@ -1383,20 +1383,19 @@
 
     if (!respostaPedido.ok) {
 
-      const erro =
-        await respostaPedido.text();
+  const erro =
+    await respostaPedido.text();
 
-      console.error(
-        "Erro ao criar pedido:",
-        erro
-      );
+  console.error(
+    "Erro ao criar pedido:",
+    erro
+  );
 
-      throw new Error(
-        "Erro ao criar pedido."
-      );
+  throw new Error(
+    "Erro ao criar pedido: " + erro
+  );
 
-    }
-
+}
 
     const pedidoCriado =
       await respostaPedido.json();

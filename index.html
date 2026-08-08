@@ -37,7 +37,7 @@
     main {
       max-width: 600px;
       margin: auto;
-      padding: 20px 15px 100px;
+      padding: 20px 15px 120px;
     }
 
     h2 {
@@ -68,7 +68,7 @@
       font-weight: bold;
     }
 
-    button {
+    .btn-adicionar {
       background: #111;
       color: white;
       border: 0;
@@ -78,13 +78,158 @@
       cursor: pointer;
     }
 
-    button:hover {
+    .btn-adicionar:hover {
       opacity: 0.85;
     }
 
     #mensagem {
       text-align: center;
       padding: 30px;
+      color: #666;
+    }
+
+    /* BOTÃO DO CARRINHO */
+
+    #botaoCarrinho {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 30px);
+      max-width: 570px;
+      background: #111;
+      color: white;
+      border: none;
+      padding: 16px 20px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+      z-index: 1000;
+    }
+
+    /* FUNDO DO CARRINHO */
+
+    #fundoCarrinho {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 2000;
+    }
+
+    /* JANELA DO CARRINHO */
+
+    #carrinho {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 600px;
+      max-height: 85vh;
+      background: white;
+      border-radius: 18px 18px 0 0;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .cabecalhoCarrinho {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .cabecalhoCarrinho h2 {
+      margin: 0;
+    }
+
+    .fechar {
+      background: #eee;
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .itemCarrinho {
+      border-bottom: 1px solid #eee;
+      padding: 15px 0;
+    }
+
+    .linhaProduto {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .nomeProduto {
+      font-weight: bold;
+    }
+
+    .precoProduto {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .controles {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .controle {
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 8px;
+      background: #eee;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .quantidade {
+      font-weight: bold;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .remover {
+      margin-left: auto;
+      border: none;
+      background: transparent;
+      color: #c00;
+      cursor: pointer;
+    }
+
+    .totalCarrinho {
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 20px 0;
+    }
+
+    .btnFinalizar {
+      width: 100%;
+      background: #111;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .carrinhoVazio {
+      text-align: center;
+      padding: 30px 10px;
       color: #666;
     }
   </style>
@@ -98,20 +243,77 @@
 </header>
 
 <main>
+
   <h2>Nosso cardápio</h2>
 
   <div id="produtos">
     <div id="mensagem">Carregando produtos...</div>
   </div>
+
 </main>
 
-<script>
-  // URL BASE DO SUPABASE
-  // IMPORTANTE: NÃO colocar /rest/v1/ aqui
-  const SUPABASE_URL = "https://chzatnrzmwgjpyxnfdlt.supabase.co";
+<!-- BOTÃO FIXO DO CARRINHO -->
 
-  // PUBLISHABLE KEY / ANON KEY
-  const SUPABASE_KEY = "sb_publishable_p_5VyliNPeji3YKccxVqUQ_bTt9_YwR";
+<button id="botaoCarrinho" onclick="abrirCarrinho()">
+  🛒 Ver pedido (0) — R$ 0,00
+</button>
+
+<!-- CARRINHO -->
+
+<div id="fundoCarrinho">
+
+  <div id="carrinho">
+
+    <div class="cabecalhoCarrinho">
+      <h2>🛒 Seu pedido</h2>
+
+      <button class="fechar" onclick="fecharCarrinho()">
+        ×
+      </button>
+    </div>
+
+    <div id="itensCarrinho">
+      <div class="carrinhoVazio">
+        Seu carrinho está vazio.
+      </div>
+    </div>
+
+    <div class="totalCarrinho">
+      <span>Total</span>
+      <span id="total">R$ 0,00</span>
+    </div>
+
+    <button class="btnFinalizar" onclick="finalizarPedido()">
+      Finalizar pedido
+    </button>
+
+  </div>
+
+</div>
+
+<script>
+
+  /* ============================
+     SUPABASE
+  ============================ */
+
+  const SUPABASE_URL =
+    "https://chzatnrzmwgjpyxnfdlt.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_p_5VyliNPeji3YKccxVqUQ_bTt9_YwR";
+
+
+  /* ============================
+     CARRINHO
+  ============================ */
+
+  let carrinho = [];
+
+
+  /* ============================
+     CARREGAR PRODUTOS
+  ============================ */
 
   async function carregarProdutos() {
 
@@ -124,19 +326,26 @@
     try {
 
       const resposta = await fetch(url, {
+
         method: "GET",
+
         headers: {
           "apikey": SUPABASE_KEY,
           "Authorization": "Bearer " + SUPABASE_KEY,
           "Content-Type": "application/json"
         }
+
       });
 
-      console.log("Status da resposta:", resposta.status);
+      console.log(
+        "Status da resposta:",
+        resposta.status
+      );
 
       if (!resposta.ok) {
 
-        const erroTexto = await resposta.text();
+        const erroTexto =
+          await resposta.text();
 
         console.error(
           "Erro retornado pelo Supabase:",
@@ -144,16 +353,21 @@
         );
 
         throw new Error(
-          "Erro ao acessar o banco. Status: " +
-          resposta.status
+          "Erro ao acessar o banco."
         );
       }
 
-      const produtos = await resposta.json();
+      const produtos =
+        await resposta.json();
 
-      console.log("Produtos encontrados:", produtos);
+      console.log(
+        "Produtos encontrados:",
+        produtos
+      );
 
-      const container = document.getElementById("produtos");
+      const container =
+        document.getElementById("produtos");
+
 
       if (produtos.length === 0) {
 
@@ -163,50 +377,393 @@
         return;
       }
 
+
       container.innerHTML = "";
+
 
       produtos.forEach(produto => {
 
-        const item = document.createElement("div");
+        const item =
+          document.createElement("div");
 
         item.className = "produto";
 
+
         item.innerHTML = `
-          <h3>${produto.nome}</h3>
+
+          <h3>
+            ${produto.nome}
+          </h3>
 
           <div class="descricao">
             ${produto.descricao || ""}
           </div>
 
           <span class="preco">
-            R$ ${Number(produto.preco).toFixed(2).replace(".", ",")}
+            R$ ${Number(produto.preco)
+              .toFixed(2)
+              .replace(".", ",")}
           </span>
 
-          <button onclick="adicionar('${produto.nome}')">
+          <button
+            class="btn-adicionar"
+            onclick="adicionarAoCarrinho(${produto.id})">
+
             + Adicionar
+
           </button>
+
         `;
+
 
         container.appendChild(item);
 
       });
 
-    } catch (erro) {
 
-      console.error("Erro completo:", erro);
+      /* Guardamos os produtos para o carrinho */
+
+      window.produtosDisponiveis = produtos;
+
+    }
+
+    catch (erro) {
+
+      console.error(
+        "Erro completo:",
+        erro
+      );
 
       document.getElementById("produtos").innerHTML =
         "<div id='mensagem'>Não foi possível carregar o cardápio.</div>";
     }
-  }
-
-  function adicionar(nome) {
-
-    alert(nome + " foi adicionado ao pedido!");
 
   }
 
-  // Inicia o carregamento
+
+  /* ============================
+     ADICIONAR AO CARRINHO
+  ============================ */
+
+  function adicionarAoCarrinho(id) {
+
+    const produto =
+      window.produtosDisponiveis.find(
+        p => p.id === id
+      );
+
+
+    if (!produto) {
+
+      alert("Produto não encontrado.");
+
+      return;
+    }
+
+
+    const existente =
+      carrinho.find(
+        item => item.id === id
+      );
+
+
+    if (existente) {
+
+      existente.quantidade++;
+
+    } else {
+
+      carrinho.push({
+
+        id: produto.id,
+
+        nome: produto.nome,
+
+        preco: Number(produto.preco),
+
+        quantidade: 1
+
+      });
+
+    }
+
+
+    atualizarCarrinho();
+
+  }
+
+
+  /* ============================
+     AUMENTAR QUANTIDADE
+  ============================ */
+
+  function aumentarQuantidade(id) {
+
+    const item =
+      carrinho.find(
+        produto => produto.id === id
+      );
+
+
+    if (item) {
+
+      item.quantidade++;
+
+    }
+
+
+    atualizarCarrinho();
+
+  }
+
+
+  /* ============================
+     DIMINUIR QUANTIDADE
+  ============================ */
+
+  function diminuirQuantidade(id) {
+
+    const item =
+      carrinho.find(
+        produto => produto.id === id
+      );
+
+
+    if (!item) return;
+
+
+    item.quantidade--;
+
+
+    if (item.quantidade <= 0) {
+
+      carrinho =
+        carrinho.filter(
+          produto => produto.id !== id
+        );
+
+    }
+
+
+    atualizarCarrinho();
+
+  }
+
+
+  /* ============================
+     REMOVER PRODUTO
+  ============================ */
+
+  function removerProduto(id) {
+
+    carrinho =
+      carrinho.filter(
+        produto => produto.id !== id
+      );
+
+
+    atualizarCarrinho();
+
+  }
+
+
+  /* ============================
+     ATUALIZAR CARRINHO
+  ============================ */
+
+  function atualizarCarrinho() {
+
+    const container =
+      document.getElementById("itensCarrinho");
+
+    const botao =
+      document.getElementById("botaoCarrinho");
+
+    const totalElemento =
+      document.getElementById("total");
+
+
+    let quantidadeTotal = 0;
+
+    let valorTotal = 0;
+
+
+    carrinho.forEach(item => {
+
+      quantidadeTotal +=
+        item.quantidade;
+
+      valorTotal +=
+        item.preco *
+        item.quantidade;
+
+    });
+
+
+    botao.innerHTML =
+      `🛒 Ver pedido (${quantidadeTotal}) — R$ ${formatarPreco(valorTotal)}`;
+
+
+    totalElemento.innerHTML =
+      `R$ ${formatarPreco(valorTotal)}`;
+
+
+    if (carrinho.length === 0) {
+
+      container.innerHTML =
+        `<div class="carrinhoVazio">
+          Seu carrinho está vazio.
+        </div>`;
+
+      return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    carrinho.forEach(item => {
+
+      const div =
+        document.createElement("div");
+
+      div.className =
+        "itemCarrinho";
+
+
+      const subtotal =
+        item.preco *
+        item.quantidade;
+
+
+      div.innerHTML = `
+
+        <div class="linhaProduto">
+
+          <span class="nomeProduto">
+            ${item.nome}
+          </span>
+
+          <span class="precoProduto">
+            R$ ${formatarPreco(subtotal)}
+          </span>
+
+        </div>
+
+
+        <div class="controles">
+
+          <button
+            class="controle"
+            onclick="diminuirQuantidade(${item.id})">
+
+            −
+
+          </button>
+
+
+          <span class="quantidade">
+            ${item.quantidade}
+          </span>
+
+
+          <button
+            class="controle"
+            onclick="aumentarQuantidade(${item.id})">
+
+            +
+
+          </button>
+
+
+          <button
+            class="remover"
+            onclick="removerProduto(${item.id})">
+
+            Remover
+
+          </button>
+
+        </div>
+
+      `;
+
+
+      container.appendChild(div);
+
+    });
+
+  }
+
+
+  /* ============================
+     FORMATAR PREÇO
+  ============================ */
+
+  function formatarPreco(valor) {
+
+    return Number(valor)
+      .toFixed(2)
+      .replace(".", ",");
+
+  }
+
+
+  /* ============================
+     ABRIR CARRINHO
+  ============================ */
+
+  function abrirCarrinho() {
+
+    document.getElementById(
+      "fundoCarrinho"
+    ).style.display = "block";
+
+  }
+
+
+  /* ============================
+     FECHAR CARRINHO
+  ============================ */
+
+  function fecharCarrinho() {
+
+    document.getElementById(
+      "fundoCarrinho"
+    ).style.display = "none";
+
+  }
+
+
+  /* ============================
+     FINALIZAR PEDIDO
+  ============================ */
+
+  function finalizarPedido() {
+
+    if (carrinho.length === 0) {
+
+      alert(
+        "Adicione pelo menos um produto ao pedido."
+      );
+
+      return;
+
+    }
+
+
+    alert(
+      "Carrinho pronto! Na próxima etapa vamos criar a tela de dados do cliente e enviar o pedido para a hamburgueria."
+    );
+
+  }
+
+
+  /* ============================
+     INICIAR
+  ============================ */
+
   carregarProdutos();
 
 </script>

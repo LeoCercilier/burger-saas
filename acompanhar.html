@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acompanhar Pedido - Burger House</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #222;
+      min-height: 100vh;
+    }
+    header {
+      background: #111;
+      color: white;
+      padding: 25px 18px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 6px; font-size: 24px; }
+    main {
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 25px 20px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .numero {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .status-atual {
+      display: inline-block;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 15px;
+      margin: 15px 0;
+      text-transform: uppercase;
+    }
+    .status-novo { background: #fde8e8; color: #c0392b; }
+    .status-confirmado { background: #eaf2f8; color: #2980b9; }
+    .status-em_preparo { background: #fef5e7; color: #d68910; }
+    .status-saiu_entrega { background: #f5eef8; color: #8e44ad; }
+    .status-concluido { background: #e8f8f5; color: #1e8449; }
+    .status-cancelado { background: #eee; color: #555; }
+
+    .timeline {
+      text-align: left;
+      margin: 30px 0 10px;
+    }
+    .passo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      color: #aaa;
+    }
+    .passo.ativo {
+      color: #111;
+      font-weight: bold;
+    }
+    .passo.concluido {
+      color: #27ae60;
+    }
+    .bolinha {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ddd;
+      flex-shrink: 0;
+    }
+    .passo.ativo .bolinha { background: #111; }
+    .passo.concluido .bolinha { background: #27ae60; }
+
+    .info {
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      text-align: left;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .atualizando {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #888;
+    }
+    .erro {
+      text-align: center;
+      padding: 40px 20px;
+      color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🍔 Burger House</h1>
+  <p>Acompanhe seu pedido</p>
+</header>
+
+<main>
+  <div class="card" id="conteudo">
+    <div style="padding: 40px 0; color:#666;">Carregando pedido...</div>
+  </div>
+</main>
+
+<script>
+  const SUPABASE_URL = "https://chzatnrzmwgjpyxnfdlt.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_p_5VyliNPeji3YKccxVqUQ_bTt9_YwR";
+
+  // Pega o número do pedido da URL
+  const params = new URLSearchParams(window.location.search);
+  const pedidoId = params.get("pedido");
+
+  if (!pedidoId) {
+    document.getElementById("conteudo").innerHTML = `
+      <div class="erro">
+        <h2>Pedido não encontrado</h2>
+        <p>O link está incompleto.</p>
+      </div>
+    `;
+  } else {
+    carregarPedido();
+    // Atualiza a cada 12 segundos
+    setInterval(carregarPedido, 12000);
+  }
+
+  async function carregarPedido() {
+    try {
+      const resposta = await fetch(
+        `${SUPABASE_URL}/rest/v1/pedidos?id=eq.${pedidoId}&select=*`,
+        {
+          headers: {
+            "apikey": SUPABASE_KEY,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      if (!resposta.ok) throw new Error("Erro ao buscar pedido");
+
+      const dados = await resposta.json();
+
+      if (!dados || dados.length === 0) {
+        document.getElementById("conteudo").innerHTML = `
+          <div class="erro">
+            <h2>Pedido não encontrado</h2>
+            <p>Verifique o número do pedido.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const pedido = dados[0];
+      renderizar(pedido);
+
+    } catch (erro) {
+      console.error(erro);
+      document.getElementById("conteudo").innerHTML = `
+        <div class="erro">
+          <h2>Erro ao carregar</h2>
+          <p>Tente novamente em alguns segundos.</p>
+        </div>
+      `;
+    }
+  }
+
+  function renderizar(pedido) {
+    const status = pedido.status;
+
+    const labels = {
+      novo: "Pedido recebido",
+      confirmado: "Pedido confirmado",
+      em_preparo: "Em preparo",
+      saiu_entrega: "Saiu para entrega",
+      concluido: "Pedido concluído",
+      cancelado: "Pedido cancelado"
+    };
+
+    const ordem = ["novo", "confirmado", "em_preparo", "saiu_entrega", "concluido"];
+
+    let timelineHtml = "";
+    ordem.forEach((s, index) => {
+      const atualIndex = ordem.indexOf(status);
+      let classe = "";
+      if (index < atualIndex) classe = "concluido";
+      if (index === atualIndex) classe = "ativo";
+
+      timelineHtml += `
+        <div class="passo ${classe}">
+          <div class="bolinha"></div>
+          <div>${labels[s]}</div>
+        </div>
+      `;
+    });
+
+    document.getElementById("conteudo").innerHTML = `
+      <div class="numero">Pedido #${pedido.id}</div>
+      <div class="status-atual status-${status}">
+        ${labels[status] || status}
+      </div>
+
+      <div class="timeline">
+        ${timelineHtml}
+      </div>
+
+      <div class="info">
+        <div><strong>Cliente:</strong> ${pedido.nome_cliente}</div>
+        <div><strong>Total:</strong> R$ ${Number(pedido.total).toFixed(2).replace(".", ",")}</div>
+        <div><strong>Tipo:</strong> ${pedido.tipo_pedido === "entrega" ? "Entrega" : "Retirada"}</div>
+      </div>
+
+      <div class="atualizando">
+        Atualizado às ${new Date().toLocaleTimeString("pt-BR")}
+      </div>
+    `;
+  }
+</script>
+</body>
+</html>

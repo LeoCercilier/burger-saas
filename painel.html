@@ -322,41 +322,78 @@
   }
 
   // ==================== ATUALIZAR STATUS ====================
-  async function atualizarStatus(id, novoStatus) {
-    try {
-      const resposta = await fetch(
-        `${SUPABASE_URL}/rest/v1/pedidos?id=eq.${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "apikey": SUPABASE_KEY,
-            "Content-Type": "application/json",
-            "Prefer": "return=minimal"
-          },
-          body: JSON.stringify({ status: novoStatus })
-        }
-      );
+  // ==================== ATUALIZAR STATUS ====================
+async function atualizarStatus(id, novoStatus) {
+  // Abre a janela ANTES do await (evita bloqueio de popup)
+  let janelaWhats = null;
+  if (novoStatus === "concluido") {
+    janelaWhats = window.open("", "_blank");
+  }
 
-      if (!resposta.ok) {
-        const erro = await resposta.text();
-        throw new Error(erro);
+  try {
+    const resposta = await fetch(
+      `${SUPABASE_URL}/rest/v1/pedidos?id=eq.${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Content-Type": "application/json",
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify({ status: novoStatus })
       }
+    );
 
-      // Atualiza localmente
-      const pedido = pedidos.find(p => p.id === id);
-      if (pedido) pedido.status = novoStatus;
-      renderizarPedidos();
-
-    } catch (erro) {
-      console.error(erro);
-      alert("Erro ao atualizar status: " + erro.message);
+    if (!resposta.ok) {
+      const erro = await resposta.text();
+      if (janelaWhats) janelaWhats.close();
+      throw new Error(erro);
     }
+
+    const pedido = pedidos.find(p => p.id === id);
+    if (pedido) {
+      pedido.status = novoStatus;
+
+      if (novoStatus === "concluido") {
+        enviarWhatsAppCliente(pedido, janelaWhats);
+      }
+    }
+
+    renderizarPedidos();
+
+  } catch (erro) {
+    console.error(erro);
+    if (janelaWhats) janelaWhats.close();
+    alert("Erro ao atualizar status: " + erro.message);
+  }
+}
+
+function enviarWhatsAppCliente(pedido, janelaWhats) {
+  let telefone = (pedido.telefone || "").replace(/\D/g, "");
+
+  if (telefone.length <= 11) {
+    telefone = "55" + telefone;
   }
 
-  function formatarPreco(valor) {
-    return Number(valor).toFixed(2).replace(".", ",");
-  }
+  const mensagem = `Olá ${pedido.nome_cliente}! 🍔
 
+Seu pedido #${pedido.id} está *pronto*!
+
+Confira se já saiu para entrega.`;
+
+  const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+
+  if (janelaWhats) {
+    janelaWhats.location.href = url;
+  } else {
+    // Fallback caso a janela não tenha aberto
+    window.open(url, "_blank");
+  }
+}
+function formatarPreco(valor) {
+  return Number(valor).toFixed(2).replace(".", ",");
+}
+  
   // ==================== INICIAR ====================
   carregarPedidos();
   // Atualiza a cada 20 segundos

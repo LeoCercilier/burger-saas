@@ -1315,7 +1315,18 @@
     /* ============================
        CRIAR PEDIDO
     ============================ */
-
+alert(
+  "PEDIDO:\n\n" +
+  "nome: " + nome + "\n" +
+  "telefone: " + telefone + "\n" +
+  "tipo: " + tipo + "\n" +
+  "endereco: " + endereco + "\n" +
+  "numero: " + numero + "\n" +
+  "complemento: " + complemento + "\n" +
+  "pagamento: " + pagamento + "\n" +
+  "total: " + total
+);
+    
     const respostaPedido =
       await fetch(
         SUPABASE_URL + "/rest/v1/pedidos",

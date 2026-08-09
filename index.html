@@ -1324,18 +1324,15 @@
 
           headers: {
 
-            "apikey": SUPABASE_KEY,
+  "apikey": SUPABASE_KEY,
 
-            "Authorization":
-              "Bearer " + SUPABASE_KEY,
+  "Content-Type":
+    "application/json",
 
-            "Content-Type":
-              "application/json",
+  "Prefer":
+    "return=representation"
 
-            "Prefer":
-              "return=representation"
-
-          },
+},
 
           body: JSON.stringify({
 

@@ -136,6 +136,16 @@
     .btn-entregue { background: #3498db; }
     .btn-cancelar { background: #e74c3c; }
 
+    .pedido.confirmado { border-left-color: #3498db; }
+.pedido.em_preparo { border-left-color: #f39c12; }
+.pedido.saiu_entrega { border-left-color: #9b59b6; }
+.pedido.concluido { border-left-color: #27ae60; opacity: 0.75; }
+
+.badge.confirmado { background: #eaf2f8; color: #2980b9; }
+.badge.em_preparo { background: #fef5e7; color: #d68910; }
+.badge.saiu_entrega { background: #f5eef8; color: #8e44ad; }
+.badge.concluido { background: #e8f8f5; color: #1e8449; }
+
     .vazio {
       text-align: center;
       padding: 60px 20px;
@@ -157,9 +167,10 @@
 <div class="status-bar">
   <button class="filtro ativo" data-status="todos" onclick="filtrar('todos')">Todos</button>
   <button class="filtro" data-status="novo" onclick="filtrar('novo')">Novos</button>
-  <button class="filtro" data-status="preparando" onclick="filtrar('preparando')">Preparando</button>
-  <button class="filtro" data-status="pronto" onclick="filtrar('pronto')">Prontos</button>
-  <button class="filtro" data-status="entregue" onclick="filtrar('entregue')">Entregues</button>
+  <button class="filtro" data-status="confirmado" onclick="filtrar('confirmado')">Confirmados</button>
+  <button class="filtro" data-status="em_preparo" onclick="filtrar('em_preparo')">Em preparo</button>
+  <button class="filtro" data-status="saiu_entrega" onclick="filtrar('saiu_entrega')">Saiu p/ entrega</button>
+  <button class="filtro" data-status="concluido" onclick="filtrar('concluido')">Concluídos</button>
 </div>
 
 <main id="listaPedidos">
@@ -274,22 +285,27 @@
         </div>
 
         <div class="acoes">
-          ${pedido.status === "novo" ? `
-            <button class="btn btn-preparando" onclick="atualizarStatus(${pedido.id}, 'preparando')">
-              Aceitar / Preparar
-            </button>
-          ` : ""}
-          ${pedido.status === "preparando" ? `
-            <button class="btn btn-pronto" onclick="atualizarStatus(${pedido.id}, 'pronto')">
-              Marcar como Pronto
-            </button>
-          ` : ""}
-          ${pedido.status === "pronto" ? `
-            <button class="btn btn-entregue" onclick="atualizarStatus(${pedido.id}, 'entregue')">
-              Marcar como Entregue
-            </button>
-          ` : ""}
-        </div>
+  ${pedido.status === "novo" ? `
+    <button class="btn btn-preparando" onclick="atualizarStatus(${pedido.id}, 'confirmado')">
+      Confirmar Pedido
+    </button>
+  ` : ""}
+  ${pedido.status === "confirmado" ? `
+    <button class="btn btn-preparando" onclick="atualizarStatus(${pedido.id}, 'em_preparo')">
+      Iniciar Preparo
+    </button>
+  ` : ""}
+  ${pedido.status === "em_preparo" ? `
+    <button class="btn btn-pronto" onclick="atualizarStatus(${pedido.id}, 'saiu_entrega')">
+      Saiu para Entrega / Pronto
+    </button>
+  ` : ""}
+  ${pedido.status === "saiu_entrega" ? `
+    <button class="btn btn-entregue" onclick="atualizarStatus(${pedido.id}, 'concluido')">
+      Marcar como Concluído
+    </button>
+  ` : ""}
+</div>
       `;
 
       container.appendChild(div);

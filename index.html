@@ -4,46 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Burger House</title>
-
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f5f5f5;
       color: #222;
     }
-
     header {
       background: #111;
       color: white;
       padding: 25px 18px;
       text-align: center;
     }
-
-    header h1 {
-      margin: 0 0 6px;
-      font-size: 28px;
-    }
-
-    header p {
-      margin: 0;
-      opacity: 0.8;
-    }
-
+    header h1 { margin: 0 0 6px; font-size: 28px; }
+    header p { margin: 0; opacity: 0.8; }
     main {
       max-width: 600px;
       margin: auto;
       padding: 20px 15px 120px;
     }
-
-    h2 {
-      margin-top: 10px;
-    }
-
+    h2 { margin-top: 10px; }
     .produto {
       background: white;
       border-radius: 12px;
@@ -52,22 +34,9 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       overflow: hidden;
     }
-
-    .produto h3 {
-      margin: 0 0 7px;
-    }
-
-    .descricao {
-      color: #666;
-      font-size: 14px;
-      margin-bottom: 12px;
-    }
-
-    .preco {
-      font-size: 18px;
-      font-weight: bold;
-    }
-
+    .produto h3 { margin: 0 0 7px; }
+    .descricao { color: #666; font-size: 14px; margin-bottom: 12px; }
+    .preco { font-size: 18px; font-weight: bold; }
     .btn-adicionar {
       background: #111;
       color: white;
@@ -77,18 +46,8 @@
       float: right;
       cursor: pointer;
     }
-
-    .btn-adicionar:hover {
-      opacity: 0.85;
-    }
-
-    #mensagem {
-      text-align: center;
-      padding: 30px;
-      color: #666;
-    }
-
-    /* BOTÃO DO CARRINHO */
+    .btn-adicionar:hover { opacity: 0.85; }
+    #mensagem { text-align: center; padding: 30px; color: #666; }
 
     #botaoCarrinho {
       position: fixed;
@@ -109,8 +68,6 @@
       z-index: 1000;
     }
 
-    /* FUNDO DOS MODAIS */
-
     .modal {
       display: none;
       position: fixed;
@@ -119,9 +76,6 @@
       z-index: 2000;
       overflow-y: auto;
     }
-
-    /* JANELAS */
-
     .janela {
       position: relative;
       margin: 40px auto;
@@ -131,18 +85,13 @@
       border-radius: 18px;
       padding: 20px;
     }
-
     .cabecalhoModal {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 15px;
     }
-
-    .cabecalhoModal h2 {
-      margin: 0;
-    }
-
+    .cabecalhoModal h2 { margin: 0; }
     .fechar {
       background: #eee;
       border: none;
@@ -153,35 +102,11 @@
       cursor: pointer;
     }
 
-    /* CARRINHO */
-
-    .itemCarrinho {
-      border-bottom: 1px solid #eee;
-      padding: 15px 0;
-    }
-
-    .linhaProduto {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .nomeProduto {
-      font-weight: bold;
-    }
-
-    .precoProduto {
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    .controles {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
+    .itemCarrinho { border-bottom: 1px solid #eee; padding: 15px 0; }
+    .linhaProduto { display: flex; justify-content: space-between; gap: 10px; }
+    .nomeProduto { font-weight: bold; }
+    .precoProduto { font-weight: bold; white-space: nowrap; }
+    .controles { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
     .controle {
       width: 34px;
       height: 34px;
@@ -191,13 +116,7 @@
       font-size: 18px;
       cursor: pointer;
     }
-
-    .quantidade {
-      font-weight: bold;
-      min-width: 20px;
-      text-align: center;
-    }
-
+    .quantidade { font-weight: bold; min-width: 20px; text-align: center; }
     .remover {
       margin-left: auto;
       border: none;
@@ -205,7 +124,6 @@
       color: #c00;
       cursor: pointer;
     }
-
     .totalCarrinho {
       display: flex;
       justify-content: space-between;
@@ -213,7 +131,6 @@
       font-weight: bold;
       padding: 20px 0;
     }
-
     .btnPrincipal {
       width: 100%;
       background: #111;
@@ -225,26 +142,16 @@
       font-weight: bold;
       cursor: pointer;
     }
+    .btnPrincipal:disabled { opacity: 0.6; cursor: not-allowed; }
+    .carrinhoVazio { text-align: center; padding: 30px 10px; color: #666; }
 
-    .carrinhoVazio {
-      text-align: center;
-      padding: 30px 10px;
-      color: #666;
-    }
-
-    /* FORMULÁRIO */
-
-    .campo {
-      margin-bottom: 15px;
-    }
-
+    .campo { margin-bottom: 15px; }
     .campo label {
       display: block;
       margin-bottom: 6px;
       font-weight: bold;
       font-size: 14px;
     }
-
     .campo input,
     .campo textarea,
     .campo select {
@@ -255,11 +162,7 @@
       font-size: 16px;
       background: white;
     }
-
-    .campo textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
+    .campo textarea { min-height: 80px; resize: vertical; }
 
     .opcoes {
       display: grid;
@@ -267,7 +170,6 @@
       gap: 10px;
       margin-bottom: 18px;
     }
-
     .opcao {
       border: 1px solid #ccc;
       border-radius: 10px;
@@ -276,10 +178,7 @@
       text-align: center;
       background: white;
     }
-
-    .opcao input {
-      margin-right: 6px;
-    }
+    .opcao input { margin-right: 6px; }
 
     .resumoCheckout {
       background: #f5f5f5;
@@ -287,14 +186,12 @@
       padding: 15px;
       margin: 20px 0;
     }
-
     .resumoLinha {
       display: flex;
       justify-content: space-between;
       padding: 5px 0;
       gap: 10px;
     }
-
     .resumoTotal {
       border-top: 1px solid #ddd;
       margin-top: 10px;
@@ -302,33 +199,14 @@
       font-size: 18px;
       font-weight: bold;
     }
+    .oculto { display: none; }
 
-    .oculto {
-      display: none;
-    }
-
-    .sucesso {
-      text-align: center;
-      padding: 20px 5px;
-    }
-
-    .sucesso .icone {
-      font-size: 55px;
-      margin-bottom: 10px;
-    }
-
-    .sucesso h2 {
-      margin-bottom: 10px;
-    }
-
-    .numeroPedido {
-      font-size: 20px;
-      font-weight: bold;
-      margin: 20px 0;
-    }
+    .sucesso { text-align: center; padding: 20px 5px; }
+    .sucesso .icone { font-size: 55px; margin-bottom: 10px; }
+    .sucesso h2 { margin-bottom: 10px; }
+    .numeroPedido { font-size: 20px; font-weight: bold; margin: 20px 0; }
   </style>
 </head>
-
 <body>
 
 <header>
@@ -337,1300 +215,433 @@
 </header>
 
 <main>
-
   <h2>Nosso cardápio</h2>
-
   <div id="produtos">
     <div id="mensagem">Carregando produtos...</div>
   </div>
-
 </main>
-
-
-<!-- BOTÃO FIXO DO CARRINHO -->
 
 <button id="botaoCarrinho" onclick="abrirCarrinho()">
   🛒 Ver pedido (0) — R$ 0,00
 </button>
 
-
-<!-- MODAL DO CARRINHO -->
-
+<!-- Modal Carrinho -->
 <div id="modalCarrinho" class="modal">
-
   <div class="janela">
-
     <div class="cabecalhoModal">
-
       <h2>🛒 Seu pedido</h2>
-
-      <button class="fechar" onclick="fecharCarrinho()">
-        ×
-      </button>
-
+      <button class="fechar" onclick="fecharCarrinho()">×</button>
     </div>
-
     <div id="itensCarrinho">
-
-      <div class="carrinhoVazio">
-        Seu carrinho está vazio.
-      </div>
-
+      <div class="carrinhoVazio">Seu carrinho está vazio.</div>
     </div>
-
     <div class="totalCarrinho">
-
       <span>Total</span>
-
-      <span id="total">
-        R$ 0,00
-      </span>
-
+      <span id="total">R$ 0,00</span>
     </div>
-
-    <button
-      class="btnPrincipal"
-      onclick="abrirCheckout()">
-
-      Continuar para finalizar
-
-    </button>
-
+    <button class="btnPrincipal" onclick="abrirCheckout()">Continuar para finalizar</button>
   </div>
-
 </div>
 
-
-<!-- MODAL CHECKOUT -->
-
+<!-- Modal Checkout -->
 <div id="modalCheckout" class="modal">
-
   <div class="janela">
-
     <div class="cabecalhoModal">
-
       <h2>📋 Finalizar pedido</h2>
-
-      <button class="fechar" onclick="fecharCheckout()">
-        ×
-      </button>
-
+      <button class="fechar" onclick="fecharCheckout()">×</button>
     </div>
-
-
-    <!-- DADOS DO CLIENTE -->
 
     <div class="campo">
-
-      <label for="nomeCliente">
-        Nome *
-      </label>
-
-      <input
-        id="nomeCliente"
-        type="text"
-        placeholder="Digite seu nome">
-
+      <label for="nomeCliente">Nome *</label>
+      <input id="nomeCliente" type="text" placeholder="Digite seu nome">
     </div>
-
 
     <div class="campo">
-
-      <label for="telefone">
-        WhatsApp *
-      </label>
-
-      <input
-        id="telefone"
-        type="tel"
-        placeholder="(21) 99999-9999">
-
+      <label for="telefone">WhatsApp *</label>
+      <input id="telefone" type="tel" placeholder="(21) 99999-9999">
     </div>
-
-
-    <!-- TIPO DO PEDIDO -->
 
     <div class="campo">
-
-      <label>
-        Como deseja receber?
-      </label>
-
+      <label>Como deseja receber?</label>
     </div>
-
-
     <div class="opcoes">
-
       <label class="opcao">
-
-        <input
-          type="radio"
-          name="tipoPedido"
-          value="retirada"
-          checked
-          onchange="alterarTipoPedido()">
-
+        <input type="radio" name="tipoPedido" value="retirada" checked onchange="alterarTipoPedido()">
         🏪 Retirada
-
       </label>
-
-
       <label class="opcao">
-
-        <input
-          type="radio"
-          name="tipoPedido"
-          value="entrega"
-          onchange="alterarTipoPedido()">
-
+        <input type="radio" name="tipoPedido" value="entrega" onchange="alterarTipoPedido()">
         🛵 Entrega
-
       </label>
-
     </div>
-
-
-    <!-- ENDEREÇO -->
 
     <div id="enderecoEntrega" class="oculto">
-
       <div class="campo">
-
-        <label for="endereco">
-          Endereço *
-        </label>
-
-        <input
-          id="endereco"
-          type="text"
-          placeholder="Rua, avenida...">
-
+        <label for="endereco">Endereço *</label>
+        <input id="endereco" type="text" placeholder="Rua, avenida...">
       </div>
-
-
       <div class="campo">
-
-        <label for="numero">
-          Número *
-        </label>
-
-        <input
-          id="numero"
-          type="text"
-          placeholder="Número">
-
+        <label for="numero">Número *</label>
+        <input id="numero" type="text" placeholder="Número">
       </div>
-
-
       <div class="campo">
-
-        <label for="complemento">
-          Complemento
-        </label>
-
-        <input
-          id="complemento"
-          type="text"
-          placeholder="Apartamento, casa, referência...">
-
+        <label for="complemento">Complemento</label>
+        <input id="complemento" type="text" placeholder="Apartamento, casa, referência...">
       </div>
-
     </div>
 
-
-    <!-- PAGAMENTO -->
-
     <div class="campo">
-
-      <label for="pagamento">
-        Forma de pagamento *
-      </label>
-
+      <label for="pagamento">Forma de pagamento *</label>
       <select id="pagamento">
-
-        <option value="">
-          Selecione
-        </option>
-
-        <option value="pix">
-          Pix
-        </option>
-
-        <option value="dinheiro">
-          Dinheiro
-        </option>
-
-        <option value="cartao">
-          Cartão
-        </option>
-
+        <option value="">Selecione</option>
+        <option value="pix">Pix</option>
+        <option value="dinheiro">Dinheiro</option>
+        <option value="cartao">Cartão</option>
       </select>
-
     </div>
-
 
     <div class="campo">
-
-      <label for="observacao">
-        Observação
-      </label>
-
-      <textarea
-        id="observacao"
-        placeholder="Ex.: sem cebola, ponto da carne..."></textarea>
-
+      <label for="observacao">Observação</label>
+      <textarea id="observacao" placeholder="Ex.: sem cebola, ponto da carne..."></textarea>
     </div>
-
-
-    <!-- RESUMO -->
 
     <div class="resumoCheckout">
-
       <div id="resumoItens"></div>
-
       <div class="resumoLinha resumoTotal">
-
         <span>Total</span>
-
-        <span id="resumoTotal">
-          R$ 0,00
-        </span>
-
+        <span id="resumoTotal">R$ 0,00</span>
       </div>
-
     </div>
 
-
-    <button
-      class="btnPrincipal"
-      onclick="confirmarPedido()">
-
-      ✅ Confirmar pedido
-
-    </button>
-
+    <button class="btnPrincipal" onclick="confirmarPedido()">✅ Confirmar pedido</button>
   </div>
-
 </div>
 
-
-<!-- MODAL DE SUCESSO -->
-
+<!-- Modal Sucesso -->
 <div id="modalSucesso" class="modal">
-
   <div class="janela">
-
     <div class="sucesso">
-
-      <div class="icone">
-        ✅
-      </div>
-
-      <h2>
-        Pedido recebido!
-      </h2>
-
-      <p>
-        Seu pedido foi preparado com sucesso.
-      </p>
-
-      <div class="numeroPedido">
-        Pedido #<span id="numeroPedido"></span>
-      </div>
-
-      <button
-        class="btnPrincipal"
-        onclick="fecharSucesso()">
-
-        Voltar ao cardápio
-
-      </button>
-
+      <div class="icone">✅</div>
+      <h2>Pedido recebido!</h2>
+      <p>Seu pedido foi registrado com sucesso.</p>
+      <div class="numeroPedido">Pedido #<span id="numeroPedido"></span></div>
+      <button class="btnPrincipal" onclick="fecharSucesso()">Voltar ao cardápio</button>
     </div>
-
   </div>
-
 </div>
-
 
 <script>
-
-  /* ============================
-     SUPABASE
-  ============================ */
-
-  const SUPABASE_URL =
-    "https://chzatnrzmwgjpyxnfdlt.supabase.co";
-
-  const SUPABASE_KEY =
-    "sb_publishable_p_5VyliNPeji3YKccxVqUQ_bTt9_YwR";
-
-
-  /* ============================
-     VARIÁVEIS
-  ============================ */
+  const SUPABASE_URL = "https://chzatnrzmwgjpyxnfdlt.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_p_5VyliNPeji3YKccxVqUQ_bTt9_YwR";
 
   let carrinho = [];
-
   let produtosDisponiveis = [];
 
-
-  /* ============================
-     CARREGAR PRODUTOS
-  ============================ */
-
+  // ==================== PRODUTOS ====================
   async function carregarProdutos() {
-
-    const url =
-      SUPABASE_URL +
-      "/rest/v1/produtos?select=*&hamburgueria_id=eq.1&ativo=eq.true";
-
     try {
-
-      const resposta = await fetch(url, {
-
-        method: "GET",
-
-        headers: {
-
-          "apikey": SUPABASE_KEY,
-
-          "Authorization":
-            "Bearer " + SUPABASE_KEY,
-
-          "Content-Type":
-            "application/json"
-
+      const resposta = await fetch(
+        `${SUPABASE_URL}/rest/v1/produtos?select=*&hamburgueria_id=eq.1&ativo=eq.true`,
+        {
+          headers: {
+            "apikey": SUPABASE_KEY,
+            "Content-Type": "application/json"
+          }
         }
+      );
 
-      });
+      if (!resposta.ok) throw new Error("Erro ao carregar produtos");
 
+      const produtos = await resposta.json();
+      produtosDisponiveis = produtos;
 
-      if (!resposta.ok) {
-
-        throw new Error(
-          "Erro ao acessar produtos."
-        );
-
-      }
-
-
-      const produtos =
-        await resposta.json();
-
-
-      produtosDisponiveis =
-        produtos;
-
-
-      const container =
-        document.getElementById("produtos");
-
+      const container = document.getElementById("produtos");
 
       if (produtos.length === 0) {
-
-        container.innerHTML =
-          "<div id='mensagem'>Nenhum produto disponível.</div>";
-
+        container.innerHTML = "<div id='mensagem'>Nenhum produto disponível.</div>";
         return;
-
       }
 
-
       container.innerHTML = "";
-
-
       produtos.forEach(produto => {
-
-        const item =
-          document.createElement("div");
-
-
-        item.className =
-          "produto";
-
-
+        const item = document.createElement("div");
+        item.className = "produto";
         item.innerHTML = `
-
-          <h3>
-            ${produto.nome}
-          </h3>
-
-          <div class="descricao">
-            ${produto.descricao || ""}
-          </div>
-
-          <span class="preco">
-            R$ ${formatarPreco(produto.preco)}
-          </span>
-
-          <button
-            class="btn-adicionar"
-            onclick="adicionarAoCarrinho(${produto.id})">
-
+          <h3>${produto.nome}</h3>
+          <div class="descricao">${produto.descricao || ""}</div>
+          <span class="preco">R$ ${formatarPreco(produto.preco)}</span>
+          <button class="btn-adicionar" onclick="adicionarAoCarrinho(${produto.id})">
             + Adicionar
-
           </button>
-
         `;
-
-
         container.appendChild(item);
-
       });
-
-    }
-
-    catch (erro) {
-
+    } catch (erro) {
       console.error(erro);
-
       document.getElementById("produtos").innerHTML =
         "<div id='mensagem'>Não foi possível carregar o cardápio.</div>";
-
     }
-
   }
 
-
-  /* ============================
-     ADICIONAR
-  ============================ */
-
+  // ==================== CARRINHO ====================
   function adicionarAoCarrinho(id) {
-
-    const produto =
-      produtosDisponiveis.find(
-        p => p.id === id
-      );
-
-
+    const produto = produtosDisponiveis.find(p => p.id === id);
     if (!produto) return;
 
-
-    const existente =
-      carrinho.find(
-        item => item.id === id
-      );
-
-
+    const existente = carrinho.find(item => item.id === id);
     if (existente) {
-
       existente.quantidade++;
-
     } else {
-
       carrinho.push({
-
         id: produto.id,
-
         nome: produto.nome,
-
         preco: Number(produto.preco),
-
         quantidade: 1
-
       });
-
     }
-
-
     atualizarCarrinho();
-
   }
-
-
-  /* ============================
-     AUMENTAR
-  ============================ */
 
   function aumentarQuantidade(id) {
-
-    const item =
-      carrinho.find(
-        produto => produto.id === id
-      );
-
-
-    if (item) {
-
-      item.quantidade++;
-
-    }
-
-
+    const item = carrinho.find(p => p.id === id);
+    if (item) item.quantidade++;
     atualizarCarrinho();
-
   }
-
-
-  /* ============================
-     DIMINUIR
-  ============================ */
 
   function diminuirQuantidade(id) {
-
-    const item =
-      carrinho.find(
-        produto => produto.id === id
-      );
-
-
+    const item = carrinho.find(p => p.id === id);
     if (!item) return;
-
-
     item.quantidade--;
-
-
     if (item.quantidade <= 0) {
-
-      carrinho =
-        carrinho.filter(
-          produto => produto.id !== id
-        );
-
+      carrinho = carrinho.filter(p => p.id !== id);
     }
-
-
     atualizarCarrinho();
-
   }
-
-
-  /* ============================
-     REMOVER
-  ============================ */
 
   function removerProduto(id) {
-
-    carrinho =
-      carrinho.filter(
-        produto => produto.id !== id
-      );
-
-
+    carrinho = carrinho.filter(p => p.id !== id);
     atualizarCarrinho();
-
   }
-
-
-  /* ============================
-     ATUALIZAR CARRINHO
-  ============================ */
 
   function atualizarCarrinho() {
-
-    const container =
-      document.getElementById("itensCarrinho");
-
-
-    const botao =
-      document.getElementById("botaoCarrinho");
-
-
-    const totalElemento =
-      document.getElementById("total");
-
+    const container = document.getElementById("itensCarrinho");
+    const botao = document.getElementById("botaoCarrinho");
+    const totalElemento = document.getElementById("total");
 
     let quantidadeTotal = 0;
-
     let valorTotal = 0;
 
-
     carrinho.forEach(item => {
-
-      quantidadeTotal +=
-        item.quantidade;
-
-
-      valorTotal +=
-        item.preco *
-        item.quantidade;
-
+      quantidadeTotal += item.quantidade;
+      valorTotal += item.preco * item.quantidade;
     });
 
-
-    botao.innerHTML =
-      `🛒 Ver pedido (${quantidadeTotal}) — R$ ${formatarPreco(valorTotal)}`;
-
-
-    totalElemento.innerHTML =
-      `R$ ${formatarPreco(valorTotal)}`;
-
+    botao.innerHTML = `🛒 Ver pedido (${quantidadeTotal}) — R$ ${formatarPreco(valorTotal)}`;
+    totalElemento.innerHTML = `R$ ${formatarPreco(valorTotal)}`;
 
     if (carrinho.length === 0) {
-
-      container.innerHTML =
-        `<div class="carrinhoVazio">
-          Seu carrinho está vazio.
-        </div>`;
-
+      container.innerHTML = `<div class="carrinhoVazio">Seu carrinho está vazio.</div>`;
       return;
-
     }
 
-
     container.innerHTML = "";
-
-
     carrinho.forEach(item => {
-
-      const div =
-        document.createElement("div");
-
-
-      div.className =
-        "itemCarrinho";
-
-
-      const subtotal =
-        item.preco *
-        item.quantidade;
-
-
+      const div = document.createElement("div");
+      div.className = "itemCarrinho";
+      const subtotal = item.preco * item.quantidade;
       div.innerHTML = `
-
         <div class="linhaProduto">
-
-          <span class="nomeProduto">
-            ${item.nome}
-          </span>
-
-          <span class="precoProduto">
-            R$ ${formatarPreco(subtotal)}
-          </span>
-
+          <span class="nomeProduto">${item.nome}</span>
+          <span class="precoProduto">R$ ${formatarPreco(subtotal)}</span>
         </div>
-
-
         <div class="controles">
-
-          <button
-            class="controle"
-            onclick="diminuirQuantidade(${item.id})">
-
-            −
-
-          </button>
-
-
-          <span class="quantidade">
-            ${item.quantidade}
-          </span>
-
-
-          <button
-            class="controle"
-            onclick="aumentarQuantidade(${item.id})">
-
-            +
-
-          </button>
-
-
-          <button
-            class="remover"
-            onclick="removerProduto(${item.id})">
-
-            Remover
-
-          </button>
-
+          <button class="controle" onclick="diminuirQuantidade(${item.id})">−</button>
+          <span class="quantidade">${item.quantidade}</span>
+          <button class="controle" onclick="aumentarQuantidade(${item.id})">+</button>
+          <button class="remover" onclick="removerProduto(${item.id})">Remover</button>
         </div>
-
       `;
-
-
       container.appendChild(div);
-
     });
-
   }
 
-
-  /* ============================
-     ABRIR CARRINHO
-  ============================ */
-
+  // ==================== MODAIS ====================
   function abrirCarrinho() {
-
-    document.getElementById(
-      "modalCarrinho"
-    ).style.display = "block";
-
+    document.getElementById("modalCarrinho").style.display = "block";
   }
-
-
-  /* ============================
-     FECHAR CARRINHO
-  ============================ */
 
   function fecharCarrinho() {
-
-    document.getElementById(
-      "modalCarrinho"
-    ).style.display = "none";
-
+    document.getElementById("modalCarrinho").style.display = "none";
   }
-
-
-  /* ============================
-     ABRIR CHECKOUT
-  ============================ */
 
   function abrirCheckout() {
-
     if (carrinho.length === 0) {
-
-      alert(
-        "Adicione pelo menos um produto ao pedido."
-      );
-
+      alert("Adicione pelo menos um produto ao pedido.");
       return;
-
     }
-
-
     fecharCarrinho();
-
-
     montarResumo();
-
-
-    document.getElementById(
-      "modalCheckout"
-    ).style.display = "block";
-
+    document.getElementById("modalCheckout").style.display = "block";
   }
-
-
-  /* ============================
-     FECHAR CHECKOUT
-  ============================ */
 
   function fecharCheckout() {
-
-    document.getElementById(
-      "modalCheckout"
-    ).style.display = "none";
-
+    document.getElementById("modalCheckout").style.display = "none";
   }
-
-
-  /* ============================
-     TIPO DO PEDIDO
-  ============================ */
 
   function alterarTipoPedido() {
-
-    const tipo =
-      document.querySelector(
-        'input[name="tipoPedido"]:checked'
-      ).value;
-
-
-    const endereco =
-      document.getElementById(
-        "enderecoEntrega"
-      );
-
-
+    const tipo = document.querySelector('input[name="tipoPedido"]:checked').value;
+    const endereco = document.getElementById("enderecoEntrega");
     if (tipo === "entrega") {
-
-      endereco.classList.remove(
-        "oculto"
-      );
-
+      endereco.classList.remove("oculto");
     } else {
-
-      endereco.classList.add(
-        "oculto"
-      );
-
+      endereco.classList.add("oculto");
     }
-
   }
-
-
-  /* ============================
-     RESUMO
-  ============================ */
 
   function montarResumo() {
-
-    const container =
-      document.getElementById(
-        "resumoItens"
-      );
-
-
+    const container = document.getElementById("resumoItens");
     let total = 0;
-
-
     container.innerHTML = "";
 
-
     carrinho.forEach(item => {
-
-      const subtotal =
-        item.preco *
-        item.quantidade;
-
-
+      const subtotal = item.preco * item.quantidade;
       total += subtotal;
-
-
-      const linha =
-        document.createElement("div");
-
-
-      linha.className =
-        "resumoLinha";
-
-
+      const linha = document.createElement("div");
+      linha.className = "resumoLinha";
       linha.innerHTML = `
-
-        <span>
-          ${item.quantidade}x ${item.nome}
-        </span>
-
-        <span>
-          R$ ${formatarPreco(subtotal)}
-        </span>
-
+        <span>${item.quantidade}x ${item.nome}</span>
+        <span>R$ ${formatarPreco(subtotal)}</span>
       `;
-
-
       container.appendChild(linha);
-
     });
 
-
-    document.getElementById(
-      "resumoTotal"
-    ).innerHTML =
-      "R$ " + formatarPreco(total);
-
+    document.getElementById("resumoTotal").innerHTML = "R$ " + formatarPreco(total);
   }
 
-
-  /* ============================
-     CONFIRMAR PEDIDO
-  ============================ */
-
+  // ==================== CONFIRMAR PEDIDO ====================
   async function confirmarPedido() {
-
-  const nome =
-    document.getElementById("nomeCliente").value.trim();
-
-  const telefone =
-    document.getElementById("telefone").value.trim();
-
-  const pagamento =
-    document.getElementById("pagamento").value;
-
-  const tipo =
-    document.querySelector(
-      'input[name="tipoPedido"]:checked'
-    ).value;
-
-  const endereco =
-    document.getElementById("endereco").value.trim();
-
-  const numero =
-    document.getElementById("numero").value.trim();
-
-  const complemento =
-    document.getElementById("complemento").value.trim();
-
-  const observacao =
-    document.getElementById("observacao").value.trim();
-
-
-  /* ============================
-     VALIDAÇÕES
-  ============================ */
-
-  if (!nome) {
-    alert("Digite seu nome.");
-    return;
-  }
-
-  if (!telefone) {
-    alert("Digite seu WhatsApp.");
-    return;
-  }
-
-  if (!pagamento) {
-    alert("Selecione a forma de pagamento.");
-    return;
-  }
-
-  if (tipo === "entrega" && (!endereco || !numero)) {
-    alert("Informe o endereço e o número.");
-    return;
-  }
-
-  if (carrinho.length === 0) {
-    alert("Seu carrinho está vazio.");
-    return;
-  }
-
-
-  /* ============================
-     CALCULAR TOTAL
-  ============================ */
-
-  let total = 0;
-
-  carrinho.forEach(item => {
-
-    total +=
-      Number(item.preco) *
-      Number(item.quantidade);
-
-  });
-
-
-  /* ============================
-     BOTÃO
-  ============================ */
-
-  const botao =
-    document.querySelector(
-      "#modalCheckout .btnPrincipal"
-    );
-
-  const textoOriginal =
-    botao.innerText;
-
-  botao.disabled = true;
-
-  botao.innerText =
-    "Enviando pedido...";
-
-
-  try {
-
-    /* ============================
-       CRIAR PEDIDO
-    ============================ */
-alert(
-  "PEDIDO:\n\n" +
-  "nome: " + nome + "\n" +
-  "telefone: " + telefone + "\n" +
-  "tipo: " + tipo + "\n" +
-  "endereco: " + endereco + "\n" +
-  "numero: " + numero + "\n" +
-  "complemento: " + complemento + "\n" +
-  "pagamento: " + pagamento + "\n" +
-  "total: " + total
-);
-    
-    const respostaPedido =
-      await fetch(
-        SUPABASE_URL + "/rest/v1/pedidos",
-        {
-          method: "POST",
-
-          headers: {
-
-  "apikey": SUPABASE_KEY,
-
-  "Content-Type":
-    "application/json",
-
-  "Prefer":
-    "return=representation"
-
-},
-
-          body: JSON.stringify({
-
-            hamburgueria_id: 1,
-
-            nome_cliente: nome,
-
-            telefone: telefone,
-
-            tipo_pedido: tipo,
-
-            endereco:
-              tipo === "entrega"
-                ? endereco
-                : null,
-
-            numero:
-              tipo === "entrega"
-                ? numero
-                : null,
-
-            complemento:
-              tipo === "entrega"
-                ? complemento
-                : null,
-
-            pagamento: pagamento,
-
-            observacao:
-              observacao || null,
-
-            total: total,
-
-            status: "novo"
-
-          })
-
-        }
-      );
-
-
-    /* ============================
-       VERIFICAR RESPOSTA
-    ============================ */
-
-    if (!respostaPedido.ok) {
-
-  const erro = await respostaPedido.text();
-
-  alert(
-    "SUPABASE ERRO\n\n" +
-    "Status: " + respostaPedido.status + "\n" +
-    "Status: " + respostaPedido.statusText + "\n\n" +
-    "Resposta:\n" + erro
-  );
-
-  return;
-
-}
-
-    const pedidoCriado =
-      await respostaPedido.json();
-
-
-    console.log(
-      "Pedido criado:",
-      pedidoCriado
-    );
-
-
-    const pedido =
-      pedidoCriado[0];
-
-
-    if (!pedido || !pedido.id) {
-
-      throw new Error(
-        "O Supabase não retornou o ID do pedido."
-      );
-
+    const nome = document.getElementById("nomeCliente").value.trim();
+    const telefone = document.getElementById("telefone").value.trim();
+    const pagamento = document.getElementById("pagamento").value;
+    const tipo = document.querySelector('input[name="tipoPedido"]:checked').value;
+    const endereco = document.getElementById("endereco").value.trim();
+    const numero = document.getElementById("numero").value.trim();
+    const complemento = document.getElementById("complemento").value.trim();
+    const observacao = document.getElementById("observacao").value.trim();
+
+    if (!nome) return alert("Digite seu nome.");
+    if (!telefone) return alert("Digite seu WhatsApp.");
+    if (!pagamento) return alert("Selecione a forma de pagamento.");
+    if (tipo === "entrega" && (!endereco || !numero)) {
+      return alert("Informe o endereço e o número.");
     }
+    if (carrinho.length === 0) return alert("Seu carrinho está vazio.");
 
+    let total = 0;
+    carrinho.forEach(item => {
+      total += Number(item.preco) * Number(item.quantidade);
+    });
 
-    /* ============================
-       CRIAR ITENS
-    ============================ */
+    const botao = document.querySelector("#modalCheckout .btnPrincipal");
+    const textoOriginal = botao.innerText;
+    botao.disabled = true;
+    botao.innerText = "Enviando pedido...";
 
-    const itens =
-      carrinho.map(item => ({
+    try {
+      // 1. Criar o pedido
+      const respostaPedido = await fetch(`${SUPABASE_URL}/rest/v1/pedidos`, {
+        method: "POST",
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Content-Type": "application/json",
+          "Prefer": "return=representation"
+        },
+        body: JSON.stringify({
+          hamburgueria_id: 1,
+          nome_cliente: nome,
+          telefone: telefone,
+          tipo_pedido: tipo,
+          endereco: tipo === "entrega" ? endereco : null,
+          numero: tipo === "entrega" ? numero : null,
+          complemento: tipo === "entrega" ? complemento : null,
+          pagamento: pagamento,
+          observacao: observacao || null,
+          total: total,
+          status: "novo"
+        })
+      });
 
-        pedido_id:
-          pedido.id,
+      if (!respostaPedido.ok) {
+        const erro = await respostaPedido.text();
+        throw new Error(`Erro ao criar pedido: ${erro}`);
+      }
 
-        produto_id:
-          item.id,
+      const pedidoCriado = await respostaPedido.json();
+      const pedido = pedidoCriado[0];
 
-        quantidade:
-          Number(item.quantidade),
+      if (!pedido || !pedido.id) {
+        throw new Error("Supabase não retornou o ID do pedido.");
+      }
 
-        preco_unitario:
-          Number(item.preco),
-
-        subtotal:
-          Number(item.preco) *
-          Number(item.quantidade)
-
+      // 2. Criar os itens do pedido
+      const itens = carrinho.map(item => ({
+        pedido_id: pedido.id,
+        produto_id: item.id,
+        quantidade: Number(item.quantidade),
+        preco_unitario: Number(item.preco),
+        subtotal: Number(item.preco) * Number(item.quantidade)
       }));
 
+      const respostaItens = await fetch(`${SUPABASE_URL}/rest/v1/itens_pedido`, {
+        method: "POST",
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(itens)
+      });
 
-    const respostaItens =
-      await fetch(
-        SUPABASE_URL + "/rest/v1/itens_pedido",
-        {
-          method: "POST",
+      if (!respostaItens.ok) {
+        const erro = await respostaItens.text();
+        throw new Error(`Erro ao salvar itens: ${erro}`);
+      }
 
-          headers: {
+      // 3. Sucesso
+      document.getElementById("numeroPedido").innerText = pedido.id;
+      document.getElementById("modalCheckout").style.display = "none";
+      document.getElementById("modalSucesso").style.display = "block";
 
-            "apikey": SUPABASE_KEY,
-
-            "Authorization":
-              "Bearer " + SUPABASE_KEY,
-
-            "Content-Type":
-              "application/json"
-
-          },
-
-          body: JSON.stringify(itens)
-
-        }
-      );
-
-
-    /* ============================
-       VERIFICAR ITENS
-    ============================ */
-
-    if (!respostaItens.ok) {
-
-      const erro =
-        await respostaItens.text();
-
-      console.error(
-        "Erro ao criar itens:",
-        erro
-      );
-
-      throw new Error(
-        "Erro ao salvar os produtos do pedido."
-      );
-
+    } catch (erro) {
+      console.error(erro);
+      alert("Erro ao enviar o pedido. Tente novamente.\n\n" + (erro.message || ""));
+    } finally {
+      botao.disabled = false;
+      botao.innerText = textoOriginal;
     }
-
-
-    console.log(
-      "Pedido e itens salvos com sucesso."
-    );
-
-
-    /* ============================
-       MOSTRAR SUCESSO
-    ============================ */
-
-    document.getElementById(
-      "numeroPedido"
-    ).innerText =
-      pedido.id;
-
-
-    document.getElementById(
-      "modalCheckout"
-    ).style.display = "none";
-
-
-    document.getElementById(
-      "modalSucesso"
-    ).style.display = "block";
-
-
-  } catch (erro) {
-
-  console.error(
-    "Erro completo:",
-    erro
-  );
-
-  alert(
-  "ERRO:\n" +
-  "Mensagem: " + (erro?.message || "não informado") + "\n" +
-  "Detalhes: " + (erro?.details || "não informado") + "\n" +
-  "Código: " + (erro?.code || "não informado") + "\n" +
-  "Hint: " + (erro?.hint || "não informado")
-);
-
-
-  } finally {
-
-    botao.disabled = false;
-
-    botao.innerText =
-      textoOriginal;
-
   }
-
-}
-  /* ============================
-     FECHAR SUCESSO
-  ============================ */
 
   function fecharSucesso() {
-
-    document.getElementById(
-      "modalSucesso"
-    ).style.display = "none";
-
-
+    document.getElementById("modalSucesso").style.display = "none";
     carrinho = [];
-
-
     atualizarCarrinho();
 
-
-    document.getElementById(
-      "nomeCliente"
-    ).value = "";
-
-
-    document.getElementById(
-      "telefone"
-    ).value = "";
-
-
-    document.getElementById(
-      "endereco"
-    ).value = "";
-
-
-    document.getElementById(
-      "numero"
-    ).value = "";
-
-
-    document.getElementById(
-      "complemento"
-    ).value = "";
-
-
-    document.getElementById(
-      "observacao"
-    ).value = "";
-
-
-    document.getElementById(
-      "pagamento"
-    ).value = "";
-
-
-    document.querySelector(
-      'input[value="retirada"]'
-    ).checked = true;
-
-
+    document.getElementById("nomeCliente").value = "";
+    document.getElementById("telefone").value = "";
+    document.getElementById("endereco").value = "";
+    document.getElementById("numero").value = "";
+    document.getElementById("complemento").value = "";
+    document.getElementById("observacao").value = "";
+    document.getElementById("pagamento").value = "";
+    document.querySelector('input[value="retirada"]').checked = true;
     alterarTipoPedido();
-
   }
-
-
-  /* ============================
-     PREÇO
-  ============================ */
 
   function formatarPreco(valor) {
-
-    return Number(valor)
-      .toFixed(2)
-      .replace(".", ",");
-
+    return Number(valor).toFixed(2).replace(".", ",");
   }
 
-
-  /* ============================
-     INICIAR
-  ============================ */
-
+  // Iniciar
   carregarProdutos();
-
 </script>
-
 </body>
 </html>

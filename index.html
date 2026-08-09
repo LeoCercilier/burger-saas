@@ -318,14 +318,26 @@
 </div>
 
 <!-- Modal Sucesso -->
+<!-- MODAL DE SUCESSO -->
 <div id="modalSucesso" class="modal">
   <div class="janela">
     <div class="sucesso">
       <div class="icone">✅</div>
       <h2>Pedido recebido!</h2>
       <p>Seu pedido foi registrado com sucesso.</p>
-      <div class="numeroPedido">Pedido #<span id="numeroPedido"></span></div>
-      <button class="btnPrincipal" onclick="fecharSucesso()">Voltar ao cardápio</button>
+      <div class="numeroPedido">
+        Pedido #<span id="numeroPedido"></span>
+      </div>
+
+      <a id="linkAcompanhar" href="#" 
+         style="display:inline-block; margin: 15px 0; padding: 12px 20px; background:#111; color:white; text-decoration:none; border-radius:10px; font-weight:bold;">
+        📦 Acompanhar meu pedido
+      </a>
+
+      <br><br>
+      <button class="btnPrincipal" onclick="fecharSucesso()">
+        Voltar ao cardápio
+      </button>
     </div>
   </div>
 </div>

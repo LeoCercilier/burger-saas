@@ -620,6 +620,11 @@
 
       // 3. Sucesso
       document.getElementById("numeroPedido").innerText = pedido.id;
+
+     // Monta o link de acompanhamento
+const link = document.getElementById("linkAcompanhar");
+link.href = `acompanhar.html?pedido=${pedido.id}`;
+      
       document.getElementById("modalCheckout").style.display = "none";
       document.getElementById("modalSucesso").style.display = "block";
 
